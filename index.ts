@@ -24,6 +24,8 @@ const users = [
     },
 ]
 
+// Los decoradores son @deprecated @skip @included
+// Si queremos hacer uno personalizado, entonces se escribe directive @uppercase on FIELD_DEFINITION
 const typeDefs = `
     type User {
         id: ID!
@@ -37,7 +39,8 @@ const typeDefs = `
 
     type Query {
         allUsers: [User]
-        userCount: Int!
+        userCount: Int! @deprecate(reason: "use userLenght")
+        userLenght: Int!
         findUserByName(name:String!): User
         findUserById(id:ID!): User
     }
@@ -61,6 +64,7 @@ const resolvers = {
     Query: {
         allUsers: () => users,
         userCount: () => users.length,
+        userLenght: () => users.length,
         findUserByName: (parent, args) => users.find( user => user.name === args.name),
         findUserById: (parent, args) => users.find( user => user.id === args.id)
     },
